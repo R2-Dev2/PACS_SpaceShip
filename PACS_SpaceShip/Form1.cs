@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTP;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,12 @@ namespace PACS_SpaceShip
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void btnTCP_Click(object sender, EventArgs e)
+        {
+            frmTCP formTCP = new frmTCP();
+            formTCP.Show();
         }
     }
 }

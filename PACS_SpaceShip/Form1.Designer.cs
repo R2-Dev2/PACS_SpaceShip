@@ -29,13 +29,34 @@ namespace PACS_SpaceShip
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.btnTCP = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // btnTCP
+            // 
+            this.btnTCP.Location = new System.Drawing.Point(187, 100);
+            this.btnTCP.Name = "btnTCP";
+            this.btnTCP.Size = new System.Drawing.Size(410, 172);
+            this.btnTCP.TabIndex = 0;
+            this.btnTCP.Text = "button TCP";
+            this.btnTCP.UseVisualStyleBackColor = true;
+            this.btnTCP.Click += new System.EventHandler(this.btnTCP_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnTCP);
+            this.Name = "Form1";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnTCP;
     }
 }
 
