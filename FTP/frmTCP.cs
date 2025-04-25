@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using DataAccess;
 
+
 namespace FTP
 {
     public partial class frmTCP : Form
@@ -25,7 +26,6 @@ namespace FTP
         private string ipDesti;
         private int portListen;
         private int portSend;
-        
 
         public frmTCP()
         {
@@ -34,7 +34,10 @@ namespace FTP
 
         private void loadPortInfo()
         {
-            Dictionary<string, string> dictShip = new Dictionary<string, string>();
+            this.ipDesti = "10.0.3.136";
+            this.portListen = 2222;
+            this.portSend = 1111;
+            /*Dictionary<string, string> dictShip = new Dictionary<string, string>();
             dictShip.Add("CodeSpaceShip", this.shipCode);
             DataSet dtsShip = accesADades.ExecutaCerca(this.tableName, dictShip);
             DataRow row = dtsShip.Tables[0].Rows[0];
@@ -45,7 +48,7 @@ namespace FTP
             DataSet dtsPlanet = accesADades.ExecutaCerca("Planets", dictPlanet);
 
             this.ipDesti = dtsPlanet.Tables[0].Rows[0]["IPPlanet"].ToString();
-            this.portListen = int.Parse(dtsPlanet.Tables[0].Rows[0]["PortPlanetS"].ToString());
+            this.portListen = int.Parse(dtsPlanet.Tables[0].Rows[0]["PortPlanetS"].ToString());*/
         }
 
         private void showValidInfo()
@@ -55,7 +58,6 @@ namespace FTP
             txb_port.Text = this.portSend.ToString();
         }
 
-
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             comunicador.SendMessage(txb_message.Text);
@@ -63,14 +65,6 @@ namespace FTP
 
         private void btnEscoltar_Click(object sender, EventArgs e)
         {
-            int listenPort;
-            if (!int.TryParse(txb_Port2.Text, out listenPort))
-            {
-                MessageBox.Show($"El port d'escolta no és vàlid. S'utilitzarà el mateix port que l'enviament ({comunicador.sendPort}).", "Avís", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                listenPort = comunicador.sendPort; 
-            }
-
-            comunicador.listenPort = listenPort;
             comunicador.StartListening();
         }
 
@@ -79,21 +73,16 @@ namespace FTP
             comunicador.StopListening();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        public void OnMessageReceived(object sender, EventArgs e)
         {
-            comunicador.StopListening();
-        }
-
-        private void OnMessageReceived(object sender, EventArgs e)
-        {
-            var msg = ((MessageEventArgs)e).MsgContent;
+            string msg = ((Client.MessageEventArgs)e).msg;
             if (textBox1.InvokeRequired)
             {
-                textBox1.Invoke(new Action(() => textBox1.AppendText(msg + Environment.NewLine)));
+                textBox1.Invoke(new Action(() => textBox1.Text = msg));
             }
             else
             {
-                textBox1.AppendText(msg + Environment.NewLine);
+                textBox1.Text = msg;
             }
         }
 
@@ -109,18 +98,19 @@ namespace FTP
             comunicador = new Client();
             comunicador.listenPort = this.portListen;
             comunicador.sendPort = this.portSend;
-            comunicador.MessageReceived += OnMessageReceived;
+            comunicador.ipDestination = this.ipDesti;
+            this.comunicador.MessageReceived += new System.EventHandler(OnMessageReceived);
         }
 
         //arxius
-        
+
         private void btnSeleccionarArxiu_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    tbxNameArxiu.Text = ofd.FileName; 
+                    tbxNameArxiu.Text = ofd.FileName;
                 }
             }
         }
@@ -145,7 +135,7 @@ namespace FTP
 
         private void btnRebreArxiu_Click(object sender, EventArgs e)
         {
-            string saveDirectory = @"C:\Rebuts\"; 
+            string saveDirectory = @"C:\Rebuts\";
             if (!Directory.Exists(saveDirectory))
             {
                 Directory.CreateDirectory(saveDirectory);

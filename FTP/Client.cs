@@ -22,7 +22,6 @@ namespace FTP
         public int sendPort;
         private string messageToSend;
 
-        public event EventHandler<MessageEventArgs> MessageReceived;
 
         public void StartListening()
         {
@@ -41,7 +40,7 @@ namespace FTP
         {
             try
             {
-                listener = new TcpListener(IPAddress.Parse(ipDestination), listenPort);
+                listener = new TcpListener(IPAddress.Any, listenPort);
                 listener.Start();
                 while (!token.IsCancellationRequested)
                 {
@@ -100,15 +99,25 @@ namespace FTP
             }
         }
 
+        public class MessageEventArgs : System.EventArgs
+        {
+            public string msg;
+
+        }
+
+
+        public event EventHandler MessageReceived;
+
         protected virtual void OnMessageReceived(string msg)
         {
-            MessageReceived?.Invoke(this, new MessageEventArgs { MsgContent = msg });
+            if (null != MessageReceived)
+            {
+                MessageEventArgs e = new MessageEventArgs();
+                e.msg = msg;
+                MessageReceived(this, e);
+            }
+
         }
     }
 
-    public class MessageEventArgs : EventArgs
-    {
-        public string MsgContent { get; set; }
-    }
-    
 }
