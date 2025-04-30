@@ -62,6 +62,10 @@ namespace FTP
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnArxiu = new System.Windows.Forms.Button();
             this.tbxNameArxiu = new System.Windows.Forms.TextBox();
+            this.SendFile = new System.Windows.Forms.Button();
+            this.RecibeFile = new System.Windows.Forms.Button();
+            this.txtRecibe = new System.Windows.Forms.TextBox();
+            this.txtSend = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button2
@@ -363,7 +367,7 @@ namespace FTP
             this.btnArxiu.TabIndex = 74;
             this.btnArxiu.Text = "Selecciona Arxiu";
             this.btnArxiu.UseVisualStyleBackColor = true;
-            this.btnArxiu.Click += new System.EventHandler(this.btnSeleccionarArxiu_Click);
+            this.btnArxiu.Click += new System.EventHandler(this.btnArxiu_Click);
             // 
             // tbxNameArxiu
             // 
@@ -372,11 +376,51 @@ namespace FTP
             this.tbxNameArxiu.Size = new System.Drawing.Size(237, 31);
             this.tbxNameArxiu.TabIndex = 75;
             // 
+            // SendFile
+            // 
+            this.SendFile.Location = new System.Drawing.Point(70, 892);
+            this.SendFile.Margin = new System.Windows.Forms.Padding(4);
+            this.SendFile.Name = "SendFile";
+            this.SendFile.Size = new System.Drawing.Size(209, 52);
+            this.SendFile.TabIndex = 76;
+            this.SendFile.Text = "Enviar Arxiu";
+            this.SendFile.UseVisualStyleBackColor = true;
+            this.SendFile.Click += new System.EventHandler(this.btnEnviarArxiu_Click);
+            // 
+            // RecibeFile
+            // 
+            this.RecibeFile.Location = new System.Drawing.Point(70, 985);
+            this.RecibeFile.Margin = new System.Windows.Forms.Padding(4);
+            this.RecibeFile.Name = "RecibeFile";
+            this.RecibeFile.Size = new System.Drawing.Size(209, 52);
+            this.RecibeFile.TabIndex = 77;
+            this.RecibeFile.Text = "Rebre Arxiu";
+            this.RecibeFile.UseVisualStyleBackColor = true;
+            this.RecibeFile.Click += new System.EventHandler(this.btnRebreArxiu_Click);
+            // 
+            // txtRecibe
+            // 
+            this.txtRecibe.Location = new System.Drawing.Point(311, 1006);
+            this.txtRecibe.Name = "txtRecibe";
+            this.txtRecibe.Size = new System.Drawing.Size(237, 31);
+            this.txtRecibe.TabIndex = 78;
+            // 
+            // txtSend
+            // 
+            this.txtSend.Location = new System.Drawing.Point(311, 913);
+            this.txtSend.Name = "txtSend";
+            this.txtSend.Size = new System.Drawing.Size(237, 31);
+            this.txtSend.TabIndex = 79;
+            // 
             // frmTCP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1637, 1220);
+            this.Controls.Add(this.txtSend);
+            this.Controls.Add(this.txtRecibe);
+            this.Controls.Add(this.RecibeFile);
+            this.Controls.Add(this.SendFile);
             this.Controls.Add(this.tbxNameArxiu);
             this.Controls.Add(this.btnArxiu);
             this.Controls.Add(this.label10);
@@ -451,5 +495,9 @@ namespace FTP
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnArxiu;
         private System.Windows.Forms.TextBox tbxNameArxiu;
+        private System.Windows.Forms.Button SendFile;
+        private System.Windows.Forms.Button RecibeFile;
+        private System.Windows.Forms.TextBox txtRecibe;
+        private System.Windows.Forms.TextBox txtSend;
     }
 }

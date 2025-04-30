@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FTP
 {
     public static class FileTransferHelper
     {
-        private const int BufferSize = 8192;
-
         public static void SendFile(string filePath, string ip, int port)
         {
             try
@@ -24,26 +19,26 @@ namespace FTP
                 {
                     string fileName = Path.GetFileName(filePath);
                     byte[] fileNameBytes = Encoding.UTF8.GetBytes(fileName);
-                    writer.Write(fileNameBytes.Length);
-                    writer.Write(fileNameBytes);
+                    writer.Write(fileNameBytes.Length); 
+                    writer.Write(fileNameBytes); 
 
-                    byte[] fileData = File.ReadAllBytes(filePath);
-                    writer.Write(fileData.Length);
+                    long fileSize = new FileInfo(filePath).Length;
+                    writer.Write(fileSize);
 
                     using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
-                        byte[] buffer = new byte[BufferSize];
+                        byte[] buffer = new byte[4096]; 
                         int bytesRead;
                         while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                         {
-                            writer.Write(buffer, 0, bytesRead);
+                            stream.Write(buffer, 0, bytesRead);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error enviant arxiu: {ex.Message}");
+                Console.WriteLine($"Error enviant el fitxer: {ex.Message}");
             }
         }
 
@@ -51,44 +46,37 @@ namespace FTP
         {
             Thread receiverThread = new Thread(() =>
             {
-                try
-                {
-                    TcpListener listener = new TcpListener(IPAddress.Parse(ip), port);
-                    listener.Start();
-                    Console.WriteLine("Esperant arxius...");
+                TcpListener listener = new TcpListener(IPAddress.Parse(ip), port);
+                listener.Start();
 
-                    while (true)
+                while (true)
+                {
+                    using (TcpClient client = listener.AcceptTcpClient())
+                    using (NetworkStream stream = client.GetStream())
+                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, true))
                     {
-                        using (TcpClient client = listener.AcceptTcpClient())
-                        using (NetworkStream stream = client.GetStream())
-                        using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, true))
+                        if (stream.DataAvailable) 
                         {
                             int fileNameLength = reader.ReadInt32();
                             string fileName = Encoding.UTF8.GetString(reader.ReadBytes(fileNameLength));
+                            long fileSize = reader.ReadInt64();
 
-                            int totalFileSize = reader.ReadInt32();
                             string filePath = Path.Combine(saveDirectory, fileName);
-
                             using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                             {
-                                byte[] buffer = new byte[BufferSize];
-                                int bytesReceived = 0;
-                                while (bytesReceived < totalFileSize)
+                                byte[] buffer = new byte[4096];
+                                long bytesReceived = 0;
+
+                                while (bytesReceived < fileSize)
                                 {
-                                    int bytesToRead = Math.Min(BufferSize, totalFileSize - bytesReceived);
+                                    int bytesToRead = (int)Math.Min(buffer.Length, fileSize - bytesReceived);
                                     int read = stream.Read(buffer, 0, bytesToRead);
                                     fs.Write(buffer, 0, read);
                                     bytesReceived += read;
                                 }
                             }
-
-                            onFileReceived?.Invoke($"Arxiu rebut i desat a: {filePath}");
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    onFileReceived?.Invoke($"Error rebent arxiu: {ex.Message}");
                 }
             });
 
@@ -97,3 +85,5 @@ namespace FTP
         }
     }
 }
+
+

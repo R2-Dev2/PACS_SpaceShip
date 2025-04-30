@@ -104,7 +104,7 @@ namespace FTP
 
         //arxius
 
-        private void btnSeleccionarArxiu_Click(object sender, EventArgs e)
+        /*private void btnSeleccionarArxiu_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
@@ -124,6 +124,7 @@ namespace FTP
             }
 
             if (!int.TryParse(txb_port.Text, out int sendPort))
+            //if (!int.TryParse(txb_port.Text, out int sendPort))
             {
                 MessageBox.Show("Port d'enviament invàlid!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -151,6 +152,89 @@ namespace FTP
             {
                 MessageBox.Show(msg, "Recepció d'arxius", MessageBoxButtons.OK, MessageBoxIcon.Information);
             });
+        }*/
+        private void btnEnviarArxiu_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tbxNameArxiu.Text))
+            {
+                MessageBox.Show("Selecciona un fitxer abans d'enviar-lo!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!File.Exists(tbxNameArxiu.Text))
+            {
+                MessageBox.Show("El fitxer seleccionat no existeix!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!int.TryParse(txb_port.Text, out int port))
+            {
+                MessageBox.Show("Port invàlid!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                // Enviar fitxer
+                FileTransferHelper.SendFile(tbxNameArxiu.Text, "127.0.0.1", port);
+                MessageBox.Show($"Fitxer enviat correctament: {tbxNameArxiu.Text}", "Èxit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error en l'enviament: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
+        private void btnRebreArxiu_Click(object sender, EventArgs e)
+        {
+            string saveDirectory = @"C:\Rebuts\";
+            if (!Directory.Exists(saveDirectory))
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+
+            if (!int.TryParse(txb_port.Text, out int port))
+            {
+                MessageBox.Show("Port invàlid!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                FileTransferHelper.StartFileReceiver("127.0.0.1", port, saveDirectory, (message) =>
+                {
+                    if (string.IsNullOrWhiteSpace(message))
+                    {
+                        MessageBox.Show("No s'ha rebut cap fitxer!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else if (message.StartsWith("Error"))
+                    {
+                        MessageBox.Show(message, "Error durant la recepció", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show(message, "Recepció de fitxer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                });
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error en la recepció: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnArxiu_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    tbxNameArxiu.Text = ofd.FileName;
+                }
+            }
         }
     }
 }
