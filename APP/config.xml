@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConfigData>
+  <SpaceShipConfig>
+    <SpaceShipCode>FC-G1SP00000</SpaceShipCode>
+  </SpaceShipConfig>
+  <EncodingConfig>
+    <OriginalFilesPath>\files\GeneratedFiles\</OriginalFilesPath>
+    <EncodedFilesPath>\files\ProcessedFiles\</EncodedFilesPath>
+    <NumFiles>1000</NumFiles>
+    <NumChars>10000</NumChars>
+  </EncodingConfig>
+</ConfigData>

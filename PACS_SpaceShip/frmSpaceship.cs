@@ -1,4 +1,5 @@
-﻿using FTP;
+﻿using DataAccess;
+using FTP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,12 +14,31 @@ namespace PACS_SpaceShip
 {
     public partial class frmSpaceship : Form
     {
+        private SpaceShip spaceShip;
+        private AccesADades accesADades;
         public frmSpaceship()
         {
             InitializeComponent();
-            OcultarEncabezados(tabControl1);
+        }
+
+        private void loadPlanetData()
+        {
+            spaceShip = new SpaceShip();
+            if (!spaceShip.loadConfig())
+            {
+                MessageBox.Show("Error loading configuration data. The program cannot start");
+                this.Close();
+            }
+
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("codeSpaceShip", spaceShip.CodeShip);
+            DataSet dataset = accesADades.ExecutaCerca("SpaceShips", dict);
+
+            spaceShip.IdShip = dataset.Tables[0].Rows[0]["idSpaceShip"].ToString();
+            spaceShip.PortSend = dataset.Tables[0].Rows[0]["PortSpaceShipS"].ToString();
 
         }
+
 
         private void OcultarEncabezados(TabControl tabControl1)
         {
@@ -59,6 +79,20 @@ namespace PACS_SpaceShip
             form2.Show();
 
             this.Hide();
+        }
+
+        private void frmSpaceship_Load(object sender, EventArgs e)
+        {
+            this.accesADades = new AccesADades("SecureCore");
+            loadPlanetData();
+
+            lblTitle.Text = spaceShip.CodeShip;
+            OcultarEncabezados(tabControl1);
+        }
+
+        private void pbClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
