@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{dfbbcb8b-a071-45e9-b119-dfbed7fa9685}</Project>
+      <Project>{51482522-7f37-4201-bca0-c687f789e9be}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\FTP\FTP.csproj">
@@ -95,6 +95,10 @@
     <ProjectReference Include="..\RSA\RSA.csproj">
       <Project>{b1d55c69-cf94-47e1-a65a-f45b3269efbf}</Project>
       <Name>RSA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workflow\Workflow.csproj">
+      <Project>{127affc8-fa45-4b48-b1c0-f48b5ed7cd0d}</Project>
+      <Name>Workflow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

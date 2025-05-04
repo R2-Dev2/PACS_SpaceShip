@@ -34,13 +34,9 @@ namespace FTP
 
         private void loadPortInfo()
         {
-            this.ipDesti = "10.0.3.136";
-            this.portListen = 2222;
-            this.portSend = 1111;
-            /*Dictionary<string, string> dictShip = new Dictionary<string, string>();
+            Dictionary<string, string> dictShip = new Dictionary<string, string>();
             dictShip.Add("CodeSpaceShip", this.shipCode);
             DataSet dtsShip = accesADades.ExecutaCerca(this.tableName, dictShip);
-            DataRow row = dtsShip.Tables[0].Rows[0];
             this.portSend = int.Parse(dtsShip.Tables[0].Rows[0]["PortSpaceShipS"].ToString());
 
             Dictionary<string, string> dictPlanet = new Dictionary<string, string>();
@@ -48,7 +44,7 @@ namespace FTP
             DataSet dtsPlanet = accesADades.ExecutaCerca("Planets", dictPlanet);
 
             this.ipDesti = dtsPlanet.Tables[0].Rows[0]["IPPlanet"].ToString();
-            this.portListen = int.Parse(dtsPlanet.Tables[0].Rows[0]["PortPlanetS"].ToString());*/
+            this.portListen = int.Parse(dtsPlanet.Tables[0].Rows[0]["PortPlanetS"].ToString());
         }
 
         private void showValidInfo()
@@ -69,7 +65,7 @@ namespace FTP
         }
 
         private void btnNoEscoltar_Click(object sender, EventArgs e)
-        {
+        {   
             comunicador.StopListening();
         }
 

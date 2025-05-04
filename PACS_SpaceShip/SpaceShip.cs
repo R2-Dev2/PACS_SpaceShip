@@ -15,7 +15,7 @@ namespace PACS_SpaceShip
         static string encodingXml = $"{baseXml}/EncodingConfig";
         public string IdShip { get; set; }
         public string CodeShip { get; set; }
-        public string PortSend { get; set; }
+        public int PortListen { get; set; }
         public EncodingConfig Encoding { get; private set; }
 
         public bool loadConfig()

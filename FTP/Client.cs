@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace FTP
 {
-    class Client
+    public class Client
     {
         private const int BufferSize = 8192; // 8 KB
         private TcpListener listener;
