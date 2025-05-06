@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -139,6 +140,23 @@ namespace PACS_SpaceShip
                 ftpClient.SendMessage(msg);
                 AddToListBox($"Sending message {msg} to IP {ftpClient.ipDestination} via {ftpClient.sendPort}");
             }
+        }
+
+        private void btnGenCred_Click(object sender, EventArgs e)
+        {
+            this.workflow.GenerateAesCredentials();
+            string encryptedKey = this.workflow.EncrypKey();
+            string encryptedIV = this.workflow.EncrypIV();
+
+            ftpClient.SendMessage(encryptedKey);
+            ftpClient.SendMessage(encryptedIV);
+        }
+
+        private void btnDescarregarPdf_Click(object sender, EventArgs e)
+        {
+            string encryptedPdf = this.workflow.EncryptPDF();
+
+            ftpClient.SendMessage(encryptedPdf);
         }
     }
 }

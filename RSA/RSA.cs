@@ -9,7 +9,7 @@ using System.Xml;
 using System.Data;
 using DataAccess;
 
-namespace RSA
+namespace Encrypting
 {
     public static class RSA
     {

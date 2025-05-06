@@ -46,8 +46,7 @@ namespace PACS_SpaceShip
             this.button7 = new System.Windows.Forms.Button();
             this.lblTitle1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDescarregatPDF = new System.Windows.Forms.Button();
             this.btnGenCred = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -252,8 +251,7 @@ namespace PACS_SpaceShip
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.LightGray;
-            this.tabPage2.Controls.Add(this.button3);
-            this.tabPage2.Controls.Add(this.button2);
+            this.tabPage2.Controls.Add(this.btnDescarregatPDF);
             this.tabPage2.Controls.Add(this.btnGenCred);
             this.tabPage2.Controls.Add(this.button8);
             this.tabPage2.Controls.Add(this.label6);
@@ -265,25 +263,16 @@ namespace PACS_SpaceShip
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             // 
-            // button3
+            // btnDescarregatPDF
             // 
-            this.button3.Location = new System.Drawing.Point(106, 163);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(111, 49);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Descarregar PDF";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(106, 227);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(83, 30);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Enviar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnDescarregatPDF.Location = new System.Drawing.Point(106, 163);
+            this.btnDescarregatPDF.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDescarregatPDF.Name = "btnDescarregatPDF";
+            this.btnDescarregatPDF.Size = new System.Drawing.Size(111, 49);
+            this.btnDescarregatPDF.TabIndex = 11;
+            this.btnDescarregatPDF.Text = "Descarregar PDF";
+            this.btnDescarregatPDF.UseVisualStyleBackColor = true;
+            this.btnDescarregatPDF.Click += new System.EventHandler(this.btnDescarregarPdf_Click);
             // 
             // btnGenCred
             // 
@@ -294,6 +283,7 @@ namespace PACS_SpaceShip
             this.btnGenCred.TabIndex = 9;
             this.btnGenCred.Text = "Generar Credencials";
             this.btnGenCred.UseVisualStyleBackColor = true;
+            this.btnGenCred.Click += new System.EventHandler(this.btnGenCred_Click);
             // 
             // button8
             // 
@@ -531,8 +521,7 @@ namespace PACS_SpaceShip
         private System.Windows.Forms.Button btnGenerarFitxer;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDescarregatPDF;
         private System.Windows.Forms.Button btnGenCred;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label6;

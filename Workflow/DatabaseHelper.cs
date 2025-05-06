@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
+using System.IO;
 
 namespace Workflow
 {
@@ -49,5 +50,14 @@ namespace Workflow
             return null;
         }
 
+        public static void GetDeliveryDataPdf(string codeDelivery)
+        {
+            Dictionary<string, string> dictPdf = new Dictionary<string, string>();
+            dictPdf.Add("codeDeliveryData", codeDelivery);
+
+            DataSet dts = accesADades.ExecutaCerca("DeliveryDataPdf", dictPdf);
+
+            byte[] deliveryDataPdf = File.ReadAllBytes(dts.Tables[0].Rows[0]["DocumentPdf"].ToString());
+        }
     }
 }

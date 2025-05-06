@@ -7,8 +7,8 @@
     <ProjectGuid>{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RSA</RootNamespace>
-    <AssemblyName>RSA</AssemblyName>
+    <RootNamespace>Encrypting</RootNamespace>
+    <AssemblyName>Encrypting</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AES.cs" />
     <Compile Include="RSA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
