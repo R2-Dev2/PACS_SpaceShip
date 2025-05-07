@@ -54,11 +54,20 @@
     <Compile Include="frmSpaceship.Designer.cs">
       <DependentUpon>frmSpaceship.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSpaceShipFinal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSpaceShipFinal.Designer.cs">
+      <DependentUpon>frmSpaceShipFinal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpaceShip.cs" />
     <EmbeddedResource Include="frmSpaceship.resx">
       <DependentUpon>frmSpaceship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSpaceShipFinal.resx">
+      <DependentUpon>frmSpaceShipFinal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -103,6 +112,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dawn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\top1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fons.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fonsTabControl.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Captura de pantalla 2025-05-07 160759.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\espacioExterior.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Captura de pantalla 2025-05-07 1607591.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Captura de pantalla 2025-05-07 1607592.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dawn1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Captura de pantalla 2025-05-07 1607593.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\top2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\btnRojo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\R.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
