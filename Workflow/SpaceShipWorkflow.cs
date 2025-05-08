@@ -44,7 +44,11 @@ namespace Workflow
         private string planetId;
         private ValidationResult status;
         private int step = 0;
-        
+        public string KeyEncripted = "no";
+        public string IVEncrypted = "no";
+        public string pdfEncrypted = "no";
+        public int encryptedKeyCount = 0;
+
         public string GetEntryMessage()
         {
             if (string.IsNullOrEmpty(planetIp) || planetPortL == 0) return null;

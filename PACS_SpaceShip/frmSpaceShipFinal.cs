@@ -99,7 +99,54 @@ namespace PACS_SpaceShip
 
         private void btn3_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage3;
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage2;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void btnEnviar_Click(object sender, EventArgs e)
+        {
+            this.workflow = new SpaceShipWorkflow();
+            this.workflow.SpaceShipCode = spaceShip.CodeShip;
+            this.workflow.SpaceShipId = spaceShip.IdShip;
+            this.workflow.DeliveryCode = txtDeliveryCode.Text;
+            string msg = workflow.GetEntryMessage();
+            if (msg != null)
+            {
+                ftpClient.ipDestination = this.workflow.planetIp;
+                ftpClient.sendPort = this.workflow.planetPortL;
+                ftpClient.SendMessage(msg);
+                AddToListBox($"Sending message {msg} to IP {ftpClient.ipDestination} via {ftpClient.sendPort}");
+            }
+            else
+            {
+                AddToListBox("The message cannot be sent because no DeliveryCode has been requested.");
+            }
+        }
+
+        private void btnGenCred_Click(object sender, EventArgs e)
+        {
+            this.workflow.GenerateAesCredentials();
+            string encryptedKey = this.workflow.KeyEncripted();
+            string encryptedIV = this.workflow.EncrypIV();
+
+            ftpClient.SendMessage(encryptedKey);
+            ftpClient.SendMessage(encryptedIV);
+        }
+
+        private void btnDescarregarPdf_Click(object sender, EventArgs e)
+        {
+            string encryptedPdf = this.workflow.EncryptPDF();
+
+            ftpClient.SendMessage(encryptedPdf);
         }
     }
 }
