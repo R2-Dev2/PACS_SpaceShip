@@ -126,8 +126,6 @@ namespace PACS_SpaceShip
             else lbxInfo.Items.Add(msg);
         }
 
-
-
         private void MakeButtonCircular(Button btn)
         {
             int diameter = Math.Min(btn.Width, btn.Height);
@@ -146,8 +144,6 @@ namespace PACS_SpaceShip
             btn.Size = new Size(diameter, diameter);
             btn.Padding = new Padding(0);
         }
-
-
 
         private void frmSpaceShipFinal_Load(object sender, EventArgs e)
         {
@@ -245,6 +241,7 @@ namespace PACS_SpaceShip
         private void btnGenCred_Click(object sender, EventArgs e)
         {
             this.workflow.GenerateAesCredentials();
+            AddToListBox(workflow.planetCode);
             string encryptedKey = this.workflow.EncrypKey();
             string encryptedIV = this.workflow.EncrypIV();
 
