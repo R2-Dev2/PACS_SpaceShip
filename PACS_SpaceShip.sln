@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.34114.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PACS_SpaceShip", "PACS_SpaceShip\PACS_SpaceShip.csproj", "{B6617830-6D54-426A-BE60-B0562CEE73AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSA", "RSA\RSA.csproj", "{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTP", "FTP\FTP.csproj", "{9BE10B7C-2DDD-4469-82C8-6D888F73886C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{51482522-7F37-4201-BCA0-C687F789E9BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow", "Workflow\Workflow.csproj", "{127AFFC8-FA45-4B48-B1C0-F48B5ED7CD0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypting", "Encrypting\Encrypting.csproj", "{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{B6617830-6D54-426A-BE60-B0562CEE73AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6617830-6D54-426A-BE60-B0562CEE73AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6617830-6D54-426A-BE60-B0562CEE73AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1D55C69-CF94-47E1-A65A-F45B3269EFBF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BE10B7C-2DDD-4469-82C8-6D888F73886C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BE10B7C-2DDD-4469-82C8-6D888F73886C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE10B7C-2DDD-4469-82C8-6D888F73886C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{127AFFC8-FA45-4B48-B1C0-F48B5ED7CD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{127AFFC8-FA45-4B48-B1C0-F48B5ED7CD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{127AFFC8-FA45-4B48-B1C0-F48B5ED7CD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
