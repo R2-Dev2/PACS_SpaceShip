@@ -80,6 +80,14 @@ namespace FTP
             senderThread.Start();
         }
 
+        public void SendMessage(string message, string lenght)
+        {
+            this.messageToSend = message;
+
+            Thread senderThread = new Thread(SendMessageTCP);
+            senderThread.Start();
+        }
+
         private void SendMessageTCP()
         {
             try

@@ -49,5 +49,16 @@ namespace Workflow
             return null;
         }
 
+        public static byte[] GetDeliveryDataPdf(string codeDelivery)
+        {
+            Dictionary<string, string> dictPdf = new Dictionary<string, string>();
+            dictPdf.Add("CodeDelivery", codeDelivery);
+
+            DataSet dts = accesADades.ExecutaCerca("DeliveryDataPdf", dictPdf);
+
+            byte[] deliveryDataPdf = (byte[]) dts.Tables[0].Rows[0]["DocumentPdf"];
+
+            return deliveryDataPdf;
+        }
     }
 }

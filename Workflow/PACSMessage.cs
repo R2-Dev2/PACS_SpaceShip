@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Workflow
 {
-    class PACSMessage
+    public class PACSMessage
     {
         public enum MessageType
         {
@@ -95,7 +95,7 @@ namespace Workflow
                         return null;
                     }
                     shipCode = message.Substring(3, 12);
-                    string result = message.Substring(14);
+                    string result = message.Substring(15);
                     ValidationResult valResult;
                     if (!Enum.TryParse(result, out valResult))
                     {

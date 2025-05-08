@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Workflow;
+using static Workflow.PACSMessage;
 
 namespace PACS_SpaceShip
 {
@@ -52,6 +53,31 @@ namespace PACS_SpaceShip
         {
             string msg = ((Client.MessageEventArgs)e).msg;
             AddToListBox("New message received");
+            ProcessMessage(msg);
+        }
+
+        private void ProcessMessage(string msg)
+        {
+            PACSMessage message = PACSMessage.ParseMessage(msg);
+            if (MessageType.VR.Equals(message.type))
+            {
+                ValidationMessage valMsg = (ValidationMessage)message;
+                if (valMsg.result.Equals(ValidationResult.VP))
+                {
+                    updateLabel(lblTitle1, "Acces Aproved");
+                    tabControl.Invoke((MethodInvoker)delegate
+                    {
+                        if (tabControl.SelectedIndex < tabControl.TabCount - 1)
+                        {
+                            tabControl.SelectedIndex = tabControl.SelectedIndex + 1;
+                        }
+                    });
+                }
+                else
+                {
+                    updateLabel(lblTitle1, "Acces Denied");
+                }
+            }
         }
 
         private void OcultarEncabezados(TabControl tabControl1)
@@ -60,6 +86,32 @@ namespace PACS_SpaceShip
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
         }
+
+        private void updateLabel(Label lbl, string message, Color? color = null)
+        {
+            if (color is null)
+            {
+                color = Color.Black;
+            }
+            if (lbl.InvokeRequired)
+            {
+                lbl.Invoke((MethodInvoker)delegate
+                {
+                    lbl.Visible = true;
+                    lbl.ForeColor = (Color)color;
+                    lbl.Text = message;
+                    lbl.Refresh();
+                });
+            }
+            else
+            {
+                lbl.Visible = true;
+                lbl.ForeColor = (Color)color;
+                lbl.Text = message;
+                lbl.Refresh();
+            }
+        }
+
         private void AddToListBox(string msg)
         {
             if (lbxInfo.InvokeRequired)
@@ -74,27 +126,27 @@ namespace PACS_SpaceShip
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage1;
+            tabControl.SelectedTab = tabPage1;
         }
 
         private void btn2_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage2;
+            tabControl.SelectedTab = tabPage2;
         }
 
         private void btn3_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage3;
+            tabControl.SelectedTab = tabPage3;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage2;
+            tabControl.SelectedTab = tabPage2;
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage3;
+            tabControl.SelectedTab = tabPage3;
         }
 
         private void frmSpaceship_Load(object sender, EventArgs e)
@@ -105,7 +157,7 @@ namespace PACS_SpaceShip
             this.ftpClient.listenPort = spaceShip.PortListen;
             this.ftpClient.MessageReceived += new System.EventHandler(OnMessageReceived);
             lblTitle.Text = spaceShip.CodeShip;
-            OcultarEncabezados(tabControl1);
+            OcultarEncabezados(tabControl);
         }
 
         private void pbClose_Click(object sender, EventArgs e)

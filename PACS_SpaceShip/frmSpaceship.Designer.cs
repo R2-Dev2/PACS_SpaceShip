@@ -36,7 +36,7 @@ namespace PACS_SpaceShip
             this.flpFrms = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlListBox = new System.Windows.Forms.Panel();
             this.lbxInfo = new System.Windows.Forms.ListBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lblDeliveryCode = new System.Windows.Forms.Label();
             this.lblSpaceShipCode = new System.Windows.Forms.Label();
@@ -69,7 +69,7 @@ namespace PACS_SpaceShip
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).BeginInit();
             this.flpFrms.SuspendLayout();
             this.pnlListBox.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -116,7 +116,7 @@ namespace PACS_SpaceShip
             // flpFrms
             // 
             this.flpFrms.Controls.Add(this.pnlListBox);
-            this.flpFrms.Controls.Add(this.tabControl1);
+            this.flpFrms.Controls.Add(this.tabControl);
             this.flpFrms.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpFrms.Location = new System.Drawing.Point(0, 263);
             this.flpFrms.Margin = new System.Windows.Forms.Padding(2);
@@ -144,17 +144,17 @@ namespace PACS_SpaceShip
             this.lbxInfo.Size = new System.Drawing.Size(255, 364);
             this.lbxInfo.TabIndex = 5;
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(405, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(588, 526);
-            this.tabControl1.TabIndex = 0;
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage3);
+            this.tabControl.Location = new System.Drawing.Point(405, 2);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(588, 526);
+            this.tabControl.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -500,7 +500,7 @@ namespace PACS_SpaceShip
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).EndInit();
             this.flpFrms.ResumeLayout(false);
             this.pnlListBox.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -544,13 +544,13 @@ namespace PACS_SpaceShip
         private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label lblTitle1;
-        private System.Windows.Forms.TabControl tabControl1;
         protected System.Windows.Forms.PictureBox pbClose;
         private System.Windows.Forms.Label lblListening;
         private System.Windows.Forms.Button btnStopListening;
         private System.Windows.Forms.Button btnStartListening;
         private System.Windows.Forms.Panel pnlListBox;
         private System.Windows.Forms.ListBox lbxInfo;
+        private System.Windows.Forms.TabControl tabControl;
     }
 }
 
