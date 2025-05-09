@@ -62,7 +62,7 @@ namespace Encrypting
 
             cspp.KeyContainerName = keyName;
 
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cspp);
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048, cspp);
             rsa.PersistKeyInCsp = true;
 
             string publicKey = rsa.ToXmlString(false);
@@ -112,15 +112,12 @@ namespace Encrypting
         public static string EncryptRSA(byte[] dataToEncrypt, string xmlPublicKey)
         {
             string dataEncrypted;
-            RSACryptoServiceProvider rsaEnc = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsaEnc = new RSACryptoServiceProvider(2048);
             rsaEnc.FromXmlString(xmlPublicKey);
-
-
-            UnicodeEncoding ByteConverter = new UnicodeEncoding();
 
             byte[] encryptedData = rsaEnc.Encrypt(dataToEncrypt, false);
 
-            dataEncrypted = ByteConverter.GetString(encryptedData);
+            dataEncrypted = Convert.ToBase64String(encryptedData);
 
             return dataEncrypted;
         }

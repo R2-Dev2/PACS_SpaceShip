@@ -39,19 +39,21 @@ namespace Workflow
         }
         public string planetCode { get; private set; }
         public string planetIp { get; private set; }
-        public int planetPortL { get; private set; }
+        public int planetMsgPort { get; private set; }
+        public int planetFilePort { get; private set; }
         private Aes myAes;
-        private string planetId;
+        public string planetId { get; private set; }
         private ValidationResult status;
         private int step = 0;
-        public string KeyEncripted = "no";
-        public string IVEncrypted = "no";
-        public string pdfEncrypted = "no";
+        public string KeyEncripted;
+        public string IVEncrypted;
+        public string PDFEncrypted;
+        public byte[] pdfEncrypted;
         public int encryptedKeyCount = 0;
 
         public string GetEntryMessage()
         {
-            if (string.IsNullOrEmpty(planetIp) || planetPortL == 0) return null;
+            if (string.IsNullOrEmpty(planetIp) || planetMsgPort == 0 || planetFilePort == 0) return null;
             return new EntryMessage(spaceShipCode, deliveryCode).ToString();
         }
 
@@ -66,49 +68,60 @@ namespace Workflow
             this.myAes = AES.GenerateAES();
         }
 
-        public string EncrypKey()
+        public void EncrypKey()
         {
             string xmlPublicKey = Encrypting.RSA.GetPlanetPublickey(planetCode);
             string credentialEncrypted = Encrypting.RSA.EncryptRSA(this.myAes.Key, xmlPublicKey);
-
-            return credentialEncrypted;
+            this.KeyEncripted = credentialEncrypted;
         }
 
-        public string EncrypIV()
+        public void EncrypIV()
         {
             string xmlPublicKey = Encrypting.RSA.GetPlanetPublickey(planetCode);
             string credentialEncrypted = Encrypting.RSA.EncryptRSA(this.myAes.IV, xmlPublicKey);
-
-            return credentialEncrypted;
+            this.IVEncrypted = credentialEncrypted;
         }
 
-        public string EncryptPDF()
+        public void EncryptPDF()
         {
             byte[] deliveryDataPdf = DatabaseHelper.GetDeliveryDataPdf(DeliveryCode);
 
-            byte[] encryptedData = AES.EncryptAES(myAes, deliveryDataPdf);
+            byte[] encryptedData = AES.EncryptAES(deliveryDataPdf, myAes.Key, myAes.IV);
 
-            return Encoding.UTF8.GetString(encryptedData);
+            this.PDFEncrypted = Convert.ToBase64String(encryptedData);
         }
 
         private void LoadDeliveryInfo()
         {
-            DataRow row = DatabaseHelper.DeliveryInfo(deliveryCode, spaceShipId);
-            if(row != null)
+            try
             {
-                this.planetId = row["idPlanet"].ToString();
+                DataRow row = DatabaseHelper.DeliveryInfo(deliveryCode, spaceShipId);
+                if (row != null)
+                {
+                    this.planetId = row["idPlanet"].ToString();
+                }
             }
+            catch{ }
         }
 
         private void LoadPlanetInfo()
         {
-            DataRow row = DatabaseHelper.PlanetInfoById(this.planetId);
-            this.planetId = row["idPlanet"].ToString();
-            this.planetIp = row["IPPlanet"].ToString();
-            this.planetCode = row["CodePlanet"].ToString();
-            string listenPort = row["PortPlanetL"].ToString();
-            if (int.TryParse(listenPort, out int listenPortInt)) this.planetPortL = listenPortInt;
-            else this.planetPortL = 0;
+            DataRow row;
+            try
+            {
+                row = DatabaseHelper.PlanetInfoById(this.planetId);
+                if (row is null) return;
+                this.planetId = row["idPlanet"].ToString();
+                this.planetIp = row["IPPlanet"].ToString();
+                this.planetCode = row["CodePlanet"].ToString();
+                string msgPort = row["PortPlanetL"].ToString();
+                string filePort = row["PortPlanetS"].ToString();
+                if (int.TryParse(msgPort, out int msgPortInt)) this.planetMsgPort = msgPortInt;
+                else this.planetMsgPort = 0;
+                if (int.TryParse(filePort, out int filePortInt)) this.planetFilePort = filePortInt;
+                else this.planetFilePort = 0;
+            }
+            catch { }
         }
     }
 }

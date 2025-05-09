@@ -60,5 +60,24 @@ namespace Workflow
 
             return deliveryDataPdf;
         }
+
+        public static Dictionary<string, string> GetCodifications(string planetId)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("idPlanet", planetId);
+            DataSet dts = accesADades.ExecutaCerca("InnerEncryption", dict);
+            string idInnerEncryption = dts.Tables[0].Rows[0]["idInnerEncryption"].ToString();
+            dict.Clear();
+            dict.Add("IdInnerEncryption", idInnerEncryption);
+            dts.Clear();
+            dts = accesADades.ExecutaCerca("InnerEncryptionData", dict);
+
+            Dictionary<string, string> codes = new Dictionary<string, string>();
+            foreach (DataRow row in dts.Tables[0].Rows)
+            {
+                codes.Add(row["Word"].ToString(), row["Numbers"].ToString());
+            }
+            return codes;
+        }
     }
 }

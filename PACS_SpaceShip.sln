@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow", "Workflow\Workfl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypting", "Encrypting\Encrypting.csproj", "{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodificationUtils", "CodificationUtils\CodificationUtils.csproj", "{5BE4C2BA-4E28-4231-9468-69D949BBCC84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{6DC11A4B-7EA8-4ECE-81DF-94B73E9EFB37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE43FA48-1008-4D8D-B05C-EDAD5F0C6CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE4C2BA-4E28-4231-9468-69D949BBCC84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE4C2BA-4E28-4231-9468-69D949BBCC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE4C2BA-4E28-4231-9468-69D949BBCC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE4C2BA-4E28-4231-9468-69D949BBCC84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC11A4B-7EA8-4ECE-81DF-94B73E9EFB37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC11A4B-7EA8-4ECE-81DF-94B73E9EFB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC11A4B-7EA8-4ECE-81DF-94B73E9EFB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC11A4B-7EA8-4ECE-81DF-94B73E9EFB37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

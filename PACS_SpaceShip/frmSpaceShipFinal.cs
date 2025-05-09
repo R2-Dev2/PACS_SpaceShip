@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Model;
 using Workflow;
+using CodificationUtils;
 using static Workflow.PACSMessage;
 using FTP;
 
@@ -20,13 +21,15 @@ namespace PACS_SpaceShip
         private SpaceShipWorkflow workflow;
         private SpaceShip spaceShip;
         private Client ftpClient;
+        private FileGenerator fileGenerator;
+
 
         public frmSpaceShipFinal()
         {
             InitializeComponent();
         }
 
-        private void loadPlanetData()
+        private void loadSpaceShipData()
         {
             spaceShip = new SpaceShip();
             if (!spaceShip.loadConfig())
@@ -36,14 +39,15 @@ namespace PACS_SpaceShip
             }
 
             DataRow shipRow = DatabaseHelper.SpaceShipInfo(spaceShip.CodeShip);
-
-            spaceShip.IdShip = shipRow["idSpaceShip"].ToString();
-            string portListenStr = shipRow["PortSpaceShipL"].ToString();
-            if (int.TryParse(portListenStr, out int portListen))
+            try
             {
-                spaceShip.PortListen = portListen;
+                spaceShip.IdShip = shipRow["idSpaceShip"].ToString();
+                string messagePortStr = shipRow["PortSpaceShipL"].ToString();
+                string filePortStr = shipRow["PortSpaceShipS"].ToString();
+                spaceShip.MessagePort = int.Parse(messagePortStr);
+                spaceShip.FilePort = int.Parse(filePortStr);
             }
-            else
+            catch(Exception)
             {
                 MessageBox.Show("Error loading configuration data. The program cannot start");
                 this.Close();
@@ -54,32 +58,44 @@ namespace PACS_SpaceShip
         public void OnMessageReceived(object sender, EventArgs e)
         {
             string msg = ((Client.MessageEventArgs)e).msg;
-            AddToListBox("New message received");
+            AddToListBox("Message received");
             ProcessMessage(msg);
+        }
+
+        public void OnFileReceived(object sender, EventArgs e)
+        {
+            string path = ((Client.FileMessageEventArgs)e).FileName;
+            AddToListBox("ZIP received");
+            enableButton(btnDecodificar, true);
         }
 
         private void ProcessMessage(string msg)
         {
+            AddToListBox(msg);
             PACSMessage message = PACSMessage.ParseMessage(msg);
+            if (message is null) return;
             if (MessageType.VR.Equals(message.type))
             {
                 ValidationMessage valMsg = (ValidationMessage)message;
-                if (valMsg.result.Equals(ValidationResult.VP))
-                {
-                    updateLabel(lblTitle1, "Acces Aproved");
-                    tabControl.Invoke((MethodInvoker)delegate
-                    {
-                        if (tabControl.SelectedIndex < tabControl.TabCount - 1)
-                        {
-                            tabControl.SelectedIndex = tabControl.SelectedIndex + 1;
-                        }
-                    });
+                if (valMsg.result.Equals(ValidationResult.VP)) {
+                    nextTab();
+                }
+                else if (valMsg.result.Equals(ValidationResult.AG)){
+                    updateLabel(lblTitle3, "ACCESS GRANTED");
                 }
                 else
                 {
-                    updateLabel(lblTitle1, "Acces Denied");
+                    updateLabel(lblTitle1, "ACCES DENIED");
                 }
             }
+        }
+
+        private void LoadFileGenerator()
+        {
+            fileGenerator = new FileGenerator();
+            fileGenerator.config = this.spaceShip.Encoding;
+            fileGenerator.SumFinished += new System.EventHandler(OnSumFinished);
+            fileGenerator.codifications = DatabaseHelper.GetCodifications(workflow.planetId);
         }
 
         private void OcultarEncabezados(TabControl tabControl1)
@@ -87,6 +103,32 @@ namespace PACS_SpaceShip
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
+        }
+
+        private void nextTab()
+        {
+            tabControl.Invoke((MethodInvoker)delegate
+            {
+                if (tabControl.SelectedIndex < tabControl.TabCount - 1)
+                {
+                    tabControl.SelectedIndex = tabControl.SelectedIndex + 1;
+                }
+            });
+        }
+
+        private void firstTab()
+        {
+            if (tabControl.InvokeRequired)
+            {
+                tabControl.Invoke((MethodInvoker)delegate
+                {
+                    tabControl.SelectedIndex = 0;
+                });
+            }
+            else
+            {
+                tabControl.SelectedIndex = 0;
+            }
         }
 
         private void updateLabel(Label lbl, string message, Color? color = null)
@@ -112,6 +154,28 @@ namespace PACS_SpaceShip
                 lbl.Text = message;
                 lbl.Refresh();
             }
+        }
+
+        private void enableButton(Button btn, bool isEnable)
+        {
+            if (btn.InvokeRequired)
+            {
+                btn.Invoke((MethodInvoker)delegate
+                {
+                    btn.Enabled = isEnable;
+                });
+            }
+            else
+            {
+                btn.Enabled = isEnable;
+            }
+        }
+
+        public void OnSumFinished(object sender, EventArgs e)
+        {
+            long sum = ((FileGenerator.SumFinishedEventArgs)e).sum;
+            AddToListBox($"Sum finished");
+            ftpClient.SendMessage(sum.ToString());
         }
 
         private void AddToListBox(string msg)
@@ -152,11 +216,13 @@ namespace PACS_SpaceShip
             MakeButtonCircular(btn2);
             MakeButtonCircular(btn3);
 
-            loadPlanetData();
+            loadSpaceShipData();
             this.txtCodeSpaceShip.Text = spaceShip.CodeShip;
             this.ftpClient = new Client();
-            this.ftpClient.listenPort = spaceShip.PortListen;
+            this.ftpClient.messagePortL = spaceShip.MessagePort;
+            this.ftpClient.filePortL = spaceShip.FilePort;
             this.ftpClient.MessageReceived += new System.EventHandler(OnMessageReceived);
+            this.ftpClient.FileReceived += new System.EventHandler(OnFileReceived);
             lblTitle.Text = spaceShip.CodeShip;
         }
 
@@ -172,10 +238,8 @@ namespace PACS_SpaceShip
 
                 btnStartListening.BackgroundImageLayout = ImageLayout.Stretch;
 
-
-                // Iniciar escolta...
                 ftpClient.StartListening();
-                AddToListBox($"Listening to messages on port {ftpClient.listenPort}");
+                AddToListBox($"Listening for messages");
             }
             else
             {
@@ -187,7 +251,6 @@ namespace PACS_SpaceShip
 
                 btnStartListening.BackgroundImageLayout = ImageLayout.Stretch;
 
-                // Aturar escolta...
                 ftpClient.StopListening();
                 AddToListBox("Stopped listening to messages");
             }
@@ -208,18 +271,13 @@ namespace PACS_SpaceShip
             tabControl.SelectedTab = tabPage3;
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
-            tabControl.SelectedTab = tabPage2;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            tabControl.SelectedTab = tabPage3;
-        }
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtDeliveryCode.Text)){
+                AddToListBox("The message cannot be sent because DeliveryCode is missing or incorrect");
+                return;
+            }
             this.workflow = new SpaceShipWorkflow();
             this.workflow.SpaceShipCode = spaceShip.CodeShip;
             this.workflow.SpaceShipId = spaceShip.IdShip;
@@ -228,32 +286,56 @@ namespace PACS_SpaceShip
             if (msg != null)
             {
                 ftpClient.ipDestination = this.workflow.planetIp;
-                ftpClient.sendPort = this.workflow.planetPortL;
+                ftpClient.messagePortS = this.workflow.planetMsgPort;
+                ftpClient.filePortS = this.workflow.planetFilePort;
                 ftpClient.SendMessage(msg);
-                AddToListBox($"Sending message {msg} to IP {ftpClient.ipDestination} via {ftpClient.sendPort}");
+                AddToListBox($"Sending ER message");
             }
             else
             {
-                AddToListBox("The message cannot be sent because no DeliveryCode has been requested.");
+                AddToListBox("The message cannot be sent because DeliveryCode is missing or incorrect");
             }
         }
 
         private void btnGenCred_Click(object sender, EventArgs e)
         {
             this.workflow.GenerateAesCredentials();
-            AddToListBox(workflow.planetCode);
-            string encryptedKey = this.workflow.EncrypKey();
-            string encryptedIV = this.workflow.EncrypIV();
-
-            ftpClient.SendMessage(encryptedKey);
-            ftpClient.SendMessage(encryptedIV);
+            AddToListBox("Credentials generated");
+            this.workflow.EncrypKey();
+            this.workflow.EncrypIV();
+            AddToListBox("Credentials encrypted");
+            enableButton(btnDescarregarPdf, true);
         }
 
         private void btnDescarregarPdf_Click(object sender, EventArgs e)
         {
-            string encryptedPdf = this.workflow.EncryptPDF();
+            this.workflow.EncryptPDF();
+            AddToListBox("PDF downloaded and encrypted");
+            enableButton(btnSend2, true);
+        }
 
-            ftpClient.SendMessage(encryptedPdf);
+        private void btnDecodificar_Click(object sender, EventArgs e)
+        {
+            LoadFileGenerator();
+            fileGenerator.EncodeFilesAndSum();
+            enableButton(btnEnviar3, true);
+        }
+
+        private void pbClose_Click(object sender, EventArgs e)
+        {
+            ftpClient.StopListening();
+            this.Close();
+        }
+
+        private void btnSend2_Click(object sender, EventArgs e)
+        {
+            string encryptedKey = workflow.KeyEncripted;
+            string encryptedIV = workflow.IVEncrypted;
+            string encryptedPdf = workflow.PDFEncrypted;
+
+            ftpClient.SendEncryptedCredentials(encryptedKey, encryptedIV, encryptedPdf);
+
+            AddToListBox("Credentials and PDF sent");
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Encrypting
         public static Aes GenerateAES()
         {
             Aes myAes = Aes.Create();
+            myAes.KeySize = 256;
 
             myAes.GenerateKey();
             myAes.GenerateIV();
@@ -21,20 +22,22 @@ namespace Encrypting
             return myAes;
         }
 
-        public static byte[] EncryptAES(Aes myAes, byte[] deliveryDataPdf)
+        public static byte[] EncryptAES(byte[] data, byte[] key, byte[] iv)
         {
-            byte[] encryptedData;
-
-            using (MemoryStream msInput = new MemoryStream(deliveryDataPdf))
-            using (MemoryStream msOutput = new MemoryStream())
-            using (CryptoStream cryptoStream = new CryptoStream(msOutput, myAes.CreateEncryptor(), CryptoStreamMode.Write))
+            using (Aes myAes = Aes.Create())
             {
-                msInput.CopyTo(cryptoStream);
-                cryptoStream.FlushFinalBlock();
-                encryptedData = msInput.ToArray();
-            }
+                myAes.Key = key;
+                myAes.IV = iv;
 
-            return encryptedData;
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cryptoStream = new CryptoStream(ms, myAes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(data, 0, data.Length);
+                    cryptoStream.FlushFinalBlock();
+                    return ms.ToArray();
+                }
+            }
         }
+
     }
 }

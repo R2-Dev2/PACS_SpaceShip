@@ -92,8 +92,8 @@ namespace FTP
             showValidInfo();
 
             comunicador = new Client();
-            comunicador.listenPort = this.portListen;
-            comunicador.sendPort = this.portSend;
+            comunicador.messagePortL = this.portListen;
+            comunicador.filePortL = this.portSend;
             comunicador.ipDestination = this.ipDesti;
             this.comunicador.MessageReceived += new System.EventHandler(OnMessageReceived);
         }
